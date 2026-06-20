@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class BookRepository extends BaseRepository {
-    EntityManager em = JpaUtil.getEntityManager();
 
     public void createBook(Book book, String username) {
         if (book.getIsbn() == null || book.getIsbn().isBlank()) {

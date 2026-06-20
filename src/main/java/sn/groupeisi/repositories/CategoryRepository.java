@@ -6,8 +6,20 @@ import sn.groupeisi.entities.Category;
 import java.util.List;
 
 public class CategoryRepository extends BaseRepository {
-    EntityManager em = JpaUtil.getEntityManager();
 
+    public Category create(Category cat)
+    {
+
+        Category category = new Category();
+        category.setName(cat.getName());
+        category.setState(Boolean.TRUE);
+        category.setUserCreated("admin");
+        category.setUserUpdated("admin");
+
+
+        executeInTransaction(() -> em.persist(category));
+        return category;
+    }
     public Category findCategoryById(int id) {
         Category c = em.find(Category.class, id);
 
@@ -31,6 +43,9 @@ public class CategoryRepository extends BaseRepository {
             Category c = em.find(Category.class, id);
             if (c != null) em.remove(c);
         });
+    }
+    public List<Category> getAllCategories() {
+        return em.createQuery("SELECT c FROM Category c ORDER BY c.name", Category.class).getResultList();
     }
 
     public List<Category> searchCategoriesByName(String keyword) {
